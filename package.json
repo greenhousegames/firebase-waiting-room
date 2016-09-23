@@ -1,12 +1,20 @@
 {
-  "name": "firebase-waiting-room",
+  "name": "@greenhousegamez/firebase-waiting-room",
   "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": ""
   },
-  "dependencies": {
-    "firebase": "^3.3.0",
-    "rsvp": "^3.2.1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greenhousegames/firebase-waiting-room.git"
   },
-  "devDependencies": {
-  }
+  "author": "Greenhouse Games, LLC",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/greenhousegames/firebase-waiting-room/issues"
+  },
+  "homepage": "https://github.com/greenhousegames/firebase-waiting-room#readme"
 }
