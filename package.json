@@ -1,0 +1,12 @@
+{
+  "name": "firebase-waiting-room",
+  "version": "0.0.1",
+  "scripts": {
+  },
+  "dependencies": {
+    "firebase": "^3.3.0",
+    "rsvp": "^3.2.1"
+  },
+  "devDependencies": {
+  }
+}
