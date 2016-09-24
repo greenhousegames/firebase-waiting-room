@@ -1,2 +1,2 @@
-import BattleRoom from 'objects/battle-room/room';
-export default BattleRoom;
+const BattleRoom = require('./room');
+module.exports = BattleRoom;

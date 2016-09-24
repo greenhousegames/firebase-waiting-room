@@ -1,4 +1,4 @@
-import rsvp from 'rsvp';
+const rsvp = require('rsvp');
 
 class BattleRoomClient {
   constructor(master) {
@@ -210,4 +210,4 @@ class BattleRoomClient {
   }
 }
 
-export default BattleRoomClient;
+module.exports = BattleRoomClient;

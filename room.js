@@ -1,5 +1,5 @@
-import BattleRoomClient from './client';
-import BattleRoomServer from './server';
+const BattleRoomClient = require('./client');
+const BattleRoomServer = require('./server');
 
 class BattleRoom {
   constructor(config) {
@@ -172,4 +172,4 @@ class BattleRoom {
   }
 }
 
-export default BattleRoom;
+module.exports = BattleRoom;
