@@ -1,8 +1,16 @@
-const BattleRoomClient = require('./client');
-const BattleRoomServer = require('./server');
+'use strict';
 
-module.exports = class BattleRoomMaster {
-  constructor(config, firebaseInst) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BattleRoomClient = require('./client');
+var BattleRoomServer = require('./server');
+
+module.exports = function () {
+  function BattleRoomMaster(config, firebaseInst) {
+    _classCallCheck(this, BattleRoomMaster);
+
     this.firebase = firebaseInst;
     this.ref = this.firebase.database().ref('battles');
     this.client = null;
@@ -15,160 +23,183 @@ module.exports = class BattleRoomMaster {
     this.config.MAX_INVITE_WAIT_TIME = this.config.MAX_INVITE_WAIT_TIME || 3000;
   }
 
-  destroy() {
-    if (this.client) {
-      this.client.destroy();
-      this.client = null;
-    }
-    if (this.server) {
-      this.server.destroy();
-      this.server = null;
-    }
-  }
-
-  registerHandler(callback, context) {
-    let index = -1;
-    this.handlers.map((handler, i) => {
-      if (handler.callback === callback && handler.context === context) {
-        index = i;
+  _createClass(BattleRoomMaster, [{
+    key: 'destroy',
+    value: function destroy() {
+      if (this.client) {
+        this.client.destroy();
+        this.client = null;
       }
-    });
-    if (index === -1) {
-      this.handlers.push({
-        callback: callback,
-        context: context
-      });
-    }
-  }
-
-  unregisterHandler(callback, context) {
-    let index = -1;
-    this.handlers.map((handler, i) => {
-      if (handler.callback === callback && handler.context === context) {
-        index = i;
+      if (this.server) {
+        this.server.destroy();
+        this.server = null;
       }
-    });
-    if (index !== -1) {
-      this.handlers.splice(index, 1);
     }
-  }
-
-  notify(msg) {
-    for (let i = 0; i < this.handlers.length; i++) {
-      this.handlers[i].callback.call(this.handlers[i].context, {
-        notification: msg
-      });
-    }
-  }
-
-  error(msg, error) {
-    for (let i = 0; i < this.handlers.length; i++) {
-      this.handlers[i].callback.call(this.handlers[i].context, {
-        notification: msg,
-        error: error
-      });
-    }
-  }
-
-  ready(msg) {
-    this.battleReady = true;
-    for (let i = 0; i < this.handlers.length; i++) {
-      this.handlers[i].callback.call(this.handlers[i].context, {
-        notification: msg,
-        ready: true
-      });
-    }
-  }
-
-  prepareForBattle() {
-    if (!this.firebase.auth().currentUser) {
-      this.firebase.auth().signInAnonymously().finally(() => {
-        this._prepareForBattle();
-      });
-    } else {
-      this._prepareForBattle();
-    }
-  }
-
-  _prepareForBattle() {
-    this.destroy();
-
-    // check if owner of any existing servers
-    this.server = new BattleRoomServer(this, this.config);
-    this.server.resume().catch(() => {
-      // no existing rooms for user
-      this.server.destroy();
-      this.server = null;
-
-      // look for room as client
-      this.client = new BattleRoomClient(this, this.config);
-      this.client.start();
-
-      // configure client to only wait 3 seconds for a game,
-      // after that convert into being a server
-      setTimeout(() => {
-        if (this.client && !this.client.isInRoom()) {
-          this.client.destroy();
-          this.client = null;
-
-          this.server = new BattleRoomServer(this, this.config);
-          this.server.start();
+  }, {
+    key: 'registerHandler',
+    value: function registerHandler(callback, context) {
+      var index = -1;
+      this.handlers.map(function (handler, i) {
+        if (handler.callback === callback && handler.context === context) {
+          index = i;
         }
-      }, this.config.MAX_CLIENT_WAIT_TIME);
-    });
-  }
-
-  acceptBattle() {
-    if (this.client) {
-      return this.client.accept();
-    } else {
-      return this.server.accept();
-    }
-  }
-
-  restart() {
-    if (this.server) {
-      this.getRoom().child('circles').remove();
-    }
-  }
-
-  unacceptBattle() {
-    if (this.client) {
-      return this.client.unaccept();
-    } else {
-      return this.server.unaccept();
-    }
-  }
-
-  getRoom() {
-    if (this.client) {
-      return this.client.roomRef;
-    } else {
-      return this.server.roomRef;
-    }
-  }
-
-  getClients() {
-    if (this.client) {
-      return this.client.clientsRef;
-    } else {
-      return this.server.clientsRef;
-    }
-  }
-
-  onServerDisconnect(callback) {
-    this.getRoom().on('value', snapshot => {
-      if (!snapshot.val()) {
-        // room disconnected
-        callback();
-        return;
+      });
+      if (index === -1) {
+        this.handlers.push({
+          callback: callback,
+          context: context
+        });
       }
-    });
-  }
+    }
+  }, {
+    key: 'unregisterHandler',
+    value: function unregisterHandler(callback, context) {
+      var index = -1;
+      this.handlers.map(function (handler, i) {
+        if (handler.callback === callback && handler.context === context) {
+          index = i;
+        }
+      });
+      if (index !== -1) {
+        this.handlers.splice(index, 1);
+      }
+    }
+  }, {
+    key: 'notify',
+    value: function notify(msg) {
+      for (var i = 0; i < this.handlers.length; i++) {
+        this.handlers[i].callback.call(this.handlers[i].context, {
+          notification: msg
+        });
+      }
+    }
+  }, {
+    key: 'error',
+    value: function error(msg, _error) {
+      for (var i = 0; i < this.handlers.length; i++) {
+        this.handlers[i].callback.call(this.handlers[i].context, {
+          notification: msg,
+          error: _error
+        });
+      }
+    }
+  }, {
+    key: 'ready',
+    value: function ready(msg) {
+      this.battleReady = true;
+      for (var i = 0; i < this.handlers.length; i++) {
+        this.handlers[i].callback.call(this.handlers[i].context, {
+          notification: msg,
+          ready: true
+        });
+      }
+    }
+  }, {
+    key: 'prepareForBattle',
+    value: function prepareForBattle() {
+      var _this = this;
 
-  onClientDisconnect(callback) {
-    this.getClients().on('child_removed', () => {
-      callback();
-    });
-  }
-};
+      if (!this.firebase.auth().currentUser) {
+        this.firebase.auth().signInAnonymously().finally(function () {
+          _this._prepareForBattle();
+        });
+      } else {
+        this._prepareForBattle();
+      }
+    }
+  }, {
+    key: '_prepareForBattle',
+    value: function _prepareForBattle() {
+      var _this2 = this;
+
+      this.destroy();
+
+      // check if owner of any existing servers
+      this.server = new BattleRoomServer(this, this.config);
+      this.server.resume().catch(function () {
+        // no existing rooms for user
+        _this2.server.destroy();
+        _this2.server = null;
+
+        // look for room as client
+        _this2.client = new BattleRoomClient(_this2, _this2.config);
+        _this2.client.start();
+
+        // configure client to only wait 3 seconds for a game,
+        // after that convert into being a server
+        setTimeout(function () {
+          if (_this2.client && !_this2.client.isInRoom()) {
+            _this2.client.destroy();
+            _this2.client = null;
+
+            _this2.server = new BattleRoomServer(_this2, _this2.config);
+            _this2.server.start();
+          }
+        }, _this2.config.MAX_CLIENT_WAIT_TIME);
+      });
+    }
+  }, {
+    key: 'acceptBattle',
+    value: function acceptBattle() {
+      if (this.client) {
+        return this.client.accept();
+      } else {
+        return this.server.accept();
+      }
+    }
+  }, {
+    key: 'restart',
+    value: function restart() {
+      if (this.server) {
+        this.getRoom().child('circles').remove();
+      }
+    }
+  }, {
+    key: 'unacceptBattle',
+    value: function unacceptBattle() {
+      if (this.client) {
+        return this.client.unaccept();
+      } else {
+        return this.server.unaccept();
+      }
+    }
+  }, {
+    key: 'getRoom',
+    value: function getRoom() {
+      if (this.client) {
+        return this.client.roomRef;
+      } else {
+        return this.server.roomRef;
+      }
+    }
+  }, {
+    key: 'getClients',
+    value: function getClients() {
+      if (this.client) {
+        return this.client.clientsRef;
+      } else {
+        return this.server.clientsRef;
+      }
+    }
+  }, {
+    key: 'onServerDisconnect',
+    value: function onServerDisconnect(callback) {
+      this.getRoom().on('value', function (snapshot) {
+        if (!snapshot.val()) {
+          // room disconnected
+          callback();
+          return;
+        }
+      });
+    }
+  }, {
+    key: 'onClientDisconnect',
+    value: function onClientDisconnect(callback) {
+      this.getClients().on('child_removed', function () {
+        callback();
+      });
+    }
+  }]);
+
+  return BattleRoomMaster;
+}();

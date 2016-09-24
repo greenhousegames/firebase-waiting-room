@@ -1,5 +1,11 @@
+'use strict';
+
+var Client = require('./client');
+var Server = require('./server');
+var Master = require('./master');
+
 module.exports = {
-  Client: require('./client'),
-  Server: require('./server'),
-  Master: require('./master')
+  Client: Client,
+  Server: Server,
+  Master: Master
 };

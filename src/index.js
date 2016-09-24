@@ -1,5 +1,9 @@
+const Client = require('./client');
+const Server = require('./server');
+const Master = require('./master');
+
 module.exports = {
-  Client: require('./client'),
-  Server: require('./server'),
-  Master: require('./master')
-}
+  Client: Client,
+  Server: Server,
+  Master: Master
+};
