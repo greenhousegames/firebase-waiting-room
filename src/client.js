@@ -94,7 +94,7 @@ module.exports = class BattleRoomClient {
 
   initWaiting() {
     if (!this.waitingRef) {
-      this.waitingRef = this.master.ref.child('waiting').child(firebase.auth().currentUser.uid);
+      this.waitingRef = this.master.ref.child('waiting').child(this.master.firebase.auth().currentUser.uid);
     }
   }
 
@@ -152,7 +152,7 @@ module.exports = class BattleRoomClient {
     }
 
     if (!this.clientRef) {
-      this.clientRef = this.clientsRef.child(firebase.auth().currentUser.uid);
+      this.clientRef = this.clientsRef.child(this.master.firebase.auth().currentUser.uid);
     }
 
     return this.clientRef.set({
