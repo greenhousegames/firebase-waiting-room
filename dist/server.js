@@ -76,7 +76,7 @@ module.exports = class BattleRoomServer {
   }
 
   joinExisting() {
-    const query = this.master.ref.child('rooms').orderByChild('owner').startAt(firebase.auth().currentUser.uid).endAt(firebase.auth().currentUser.uid);
+    const query = this.master.ref.child('rooms').orderByChild('owner').startAt(this.master.firebase.auth().currentUser.uid).endAt(this.master.firebase.auth().currentUser.uid);
     this._refs.push(query);
     const promise = new rsvp.Promise((resolve, reject) => {
       query.once('value', snapshot => {
@@ -98,7 +98,7 @@ module.exports = class BattleRoomServer {
     this.roomRef = this.master.ref.child('rooms').push();
     this.clientsRef = this.roomRef.child('clients');
     return this.roomRef.set({
-      owner: firebase.auth().currentUser.uid,
+      owner: this.master.firebase.auth().currentUser.uid,
       started: false,
       ready: false
     });

@@ -2,8 +2,9 @@ const BattleRoomClient = require('./client');
 const BattleRoomServer = require('./server');
 
 module.exports = class BattleRoomMaster {
-  constructor(config) {
-    this.ref = firebase.database().ref('battles');
+  constructor(config, firebaseInst) {
+    this.firebase = firebaseInst;
+    this.ref = this.firebase.database().ref('battles');
     this.client = null;
     this.server = null;
     this.handlers = [];
@@ -80,8 +81,8 @@ module.exports = class BattleRoomMaster {
   }
 
   prepareForBattle() {
-    if (!firebase.auth().currentUser) {
-      firebase.auth().signInAnonymously().finally(() => {
+    if (!this.firebase.auth().currentUser) {
+      this.firebase.auth().signInAnonymously().finally(() => {
         this._prepareForBattle();
       });
     } else {
