@@ -1,6 +1,6 @@
 const rsvp = require('rsvp');
 
-class BattleRoomServer {
+module.exports = class BattleRoomServer {
   constructor(master) {
     this.clientsRef = null;
     this.roomRef = null;
@@ -273,5 +273,3 @@ class BattleRoomServer {
     this.clientsRef = null;
   }
 }
-
-module.exports = BattleRoomServer;

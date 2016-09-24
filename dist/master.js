@@ -1,7 +1,7 @@
 const BattleRoomClient = require('./client');
 const BattleRoomServer = require('./server');
 
-class BattleRoom {
+module.exports = class BattleRoomMaster {
   constructor(config) {
     this.ref = firebase.database().ref('battles');
     this.client = null;
@@ -156,7 +156,7 @@ class BattleRoom {
   }
 
   onServerDisconnect(callback) {
-    this.getRoom().on('value', (snapshot) => {
+    this.getRoom().on('value', snapshot => {
       if (!snapshot.val()) {
         // room disconnected
         callback();
@@ -170,6 +170,4 @@ class BattleRoom {
       callback();
     });
   }
-}
-
-module.exports = BattleRoom;
+};
