@@ -54,18 +54,18 @@ module.exports = class BattleRoomClient {
 
     this.startWaiting()
       .then(() => {
-        this.master.notify('searching for battle');
+        this.master.notify(this.master.config.messages.searching);
 
         // once entered, wait for an invite
         this.waitForInvite()
           .then(() => {
             // wait for server to accept client
-            this.master.notify('joining battle');
+            this.master.notify(this.master.config.messages.joining);
 
             this.watchClient()
               .then(() => {
                 // client accepted by server
-                this.master.notify('battle accepted');
+                this.master.notify(this.master.config.messages.accepted);
 
                 // wait for room to be ready
                 const readyRef = this.roomRef.child('ready');
@@ -73,7 +73,7 @@ module.exports = class BattleRoomClient {
                 readyRef.on('value', (snapshot) => {
                   if (snapshot.val() === true) {
                     readyRef.off('value');
-                    this.master.ready('battle ready');
+                    this.master.ready(this.master.config.messages.ready);
                   }
                 }, this);
               })

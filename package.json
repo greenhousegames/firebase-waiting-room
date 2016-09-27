@@ -8,7 +8,8 @@
     "build": "babel src/ -d dist/",
     "pretest": "npm run build",
     "test": "mocha --require babel-register",
-    "prepublish": "npm run build"
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push && git push --tags && npm publish"
   },
   "repository": {
     "type": "git",

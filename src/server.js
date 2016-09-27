@@ -119,18 +119,18 @@ module.exports = class BattleRoomServer {
   }
 
   waitInRoom() {
-    this.master.notify('searching for battle');
+    this.master.notify(this.master.config.messages.searching);
 
     const promise = new rsvp.Promise((resolve, reject) => {
       this.waitForAllClients()
         .then((uids) => {
           this._uids = uids;
-          this.master.notify('battle accepted');
+          this.master.notify(this.master.config.messages.accepted);
 
           // signal game to start
           this.roomRef.child('ready').set(true)
             .then(() => {
-              this.master.ready('battle ready');
+              this.master.ready(this.master.config.messages.ready);
               resolve();
             })
             .catch((error) => {
