@@ -141,16 +141,16 @@ module.exports = function () {
     value: function waitInRoom() {
       var _this6 = this;
 
-      this.master.notify('searching for battle');
+      this.master.notify(this.master.config.messages.searching);
 
       var promise = new rsvp.Promise(function (resolve, reject) {
         _this6.waitForAllClients().then(function (uids) {
           _this6._uids = uids;
-          _this6.master.notify('battle accepted');
+          _this6.master.notify(_this6.master.config.messages.accepted);
 
           // signal game to start
           _this6.roomRef.child('ready').set(true).then(function () {
-            _this6.master.ready('battle ready');
+            _this6.master.ready(_this6.master.config.messages.ready);
             resolve();
           }).catch(function (error) {
             _this6.master.error('error starting battle', error);

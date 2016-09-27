@@ -72,16 +72,16 @@ module.exports = function () {
       this.alloff();
 
       this.startWaiting().then(function () {
-        _this3.master.notify('searching for battle');
+        _this3.master.notify(_this3.master.config.messages.searching);
 
         // once entered, wait for an invite
         _this3.waitForInvite().then(function () {
           // wait for server to accept client
-          _this3.master.notify('joining battle');
+          _this3.master.notify(_this3.master.config.messages.joining);
 
           _this3.watchClient().then(function () {
             // client accepted by server
-            _this3.master.notify('battle accepted');
+            _this3.master.notify(_this3.master.config.messages.accepted);
 
             // wait for room to be ready
             var readyRef = _this3.roomRef.child('ready');
@@ -89,7 +89,7 @@ module.exports = function () {
             readyRef.on('value', function (snapshot) {
               if (snapshot.val() === true) {
                 readyRef.off('value');
-                _this3.master.ready('battle ready');
+                _this3.master.ready(_this3.master.config.messages.ready);
               }
             }, _this3);
           }).catch(function (error) {

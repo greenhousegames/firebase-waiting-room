@@ -21,6 +21,12 @@ module.exports = function () {
     this.config.size = this.config.size || 2;
     this.config.MAX_CLIENT_WAIT_TIME = this.config.MAX_CLIENT_WAIT_TIME || 3000;
     this.config.MAX_INVITE_WAIT_TIME = this.config.MAX_INVITE_WAIT_TIME || 3000;
+    this.config.messages = Object.assign({
+      searching: 'searching',
+      joining: 'joining',
+      accepted: 'accepted',
+      ready: 'ready'
+    }, this.config.messages || {});
   }
 
   _createClass(BattleRoomMaster, [{
