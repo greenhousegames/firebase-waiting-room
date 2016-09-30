@@ -177,4 +177,4 @@ module.exports = class BattleRoomMaster {
       callback();
     });
   }
-}
+};

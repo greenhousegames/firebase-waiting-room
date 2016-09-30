@@ -272,4 +272,4 @@ module.exports = class BattleRoomServer {
     this.roomRef = null;
     this.clientsRef = null;
   }
-}
+};
