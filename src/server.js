@@ -1,5 +1,3 @@
-const rsvp = require('rsvp');
-
 module.exports = class BattleRoomServer {
   constructor(master) {
     this.clientsRef = null;
@@ -10,7 +8,7 @@ module.exports = class BattleRoomServer {
   }
 
   accept() {
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       const startedRef = this.roomRef.child('started');
       this._refs.push(startedRef);
       startedRef.on('value', (snapshot) => {
@@ -29,7 +27,7 @@ module.exports = class BattleRoomServer {
   }
 
   unaccept() {
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       const startedRef = this.roomRef.child('started');
       this._refs.push(startedRef);
       startedRef.on('value', (snapshot) => {
@@ -47,7 +45,7 @@ module.exports = class BattleRoomServer {
   start() {
     this.alloff();
 
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       this.createRoom()
         .then(() => {
           this.waitInRoom().then(resolve).catch(reject);
@@ -63,7 +61,7 @@ module.exports = class BattleRoomServer {
   resume() {
     this.alloff();
 
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       this.joinExisting()
         .then((room) => {
           if (!room.started) {
@@ -87,7 +85,7 @@ module.exports = class BattleRoomServer {
       .startAt(this.master.firebase.auth().currentUser.uid)
       .endAt(this.master.firebase.auth().currentUser.uid);
     this._refs.push(query);
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       query.once('value', (snapshot) => {
         const rooms = snapshot.val();
         if (rooms) {
@@ -121,7 +119,7 @@ module.exports = class BattleRoomServer {
   waitInRoom() {
     this.master.notify(this.master.config.messages.searching);
 
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       this.waitForAllClients()
         .then((uids) => {
           this._uids = uids;
@@ -152,7 +150,7 @@ module.exports = class BattleRoomServer {
       .startAt(false)
       .endAt(false);
     this._refs.push(query);
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       const roomId = this.roomRef.key;
       query.on('child_added', (snapshot) => {
         const uid = snapshot.key;
@@ -176,7 +174,7 @@ module.exports = class BattleRoomServer {
     let joined = false;
     const clientRef = this.clientsRef.child(uid);
     this._refs.push(clientRef);
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       // wait for client
       clientRef.on('value', (snapshot) => {
         const record = snapshot.val();
@@ -199,7 +197,7 @@ module.exports = class BattleRoomServer {
   }
 
   waitForClient() {
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       this.sendInvite()
         .then((uid) => {
           this.waitForInviteResponse(uid)
@@ -229,7 +227,7 @@ module.exports = class BattleRoomServer {
   waitForClientReady(uid) {
     const ref = this.clientsRef.child(uid).child('ready');
     this._refs.push(ref);
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       ref.on('value', (snapshot) => {
         if (snapshot.val() === true) {
           resolve();

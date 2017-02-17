@@ -1,5 +1,3 @@
-const rsvp = require('rsvp');
-
 module.exports = class BattleRoomClient {
   constructor(master) {
     this.waitingRef = null;
@@ -16,7 +14,7 @@ module.exports = class BattleRoomClient {
   accept() {
     const startedRef = this.roomRef.child('started');
     this._refs.push(startedRef);
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       startedRef.on('value', (snapshot) => {
         if (snapshot.val() === true) {
           resolve();
@@ -34,7 +32,7 @@ module.exports = class BattleRoomClient {
   unaccept() {
     const startedRef = this.roomRef.child('started');
     this._refs.push(startedRef);
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       startedRef.on('value', (snapshot) => {
         if (snapshot.val() === false) {
           resolve();
@@ -116,7 +114,7 @@ module.exports = class BattleRoomClient {
 
   waitForInvite() {
     this.initWaiting();
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       this.waitingRef.on('value', (snapshot) => {
         if (!this.roomRef) {
           const record = snapshot.val();
@@ -162,7 +160,7 @@ module.exports = class BattleRoomClient {
   }
 
   watchClient() {
-    const promise = new rsvp.Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       this.clientRef.on('value', (snapshot) => {
         const val = snapshot.val();
         if (!val) {
