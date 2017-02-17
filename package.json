@@ -16,7 +16,7 @@
     "url": "git+https://github.com/greenhousegames/firebase-waiting-room.git"
   },
   "author": "Greenhouse Games, LLC",
-  "license": "",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/greenhousegames/firebase-waiting-room/issues"
   },
