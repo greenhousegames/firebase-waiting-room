@@ -4,8 +4,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var rsvp = require('rsvp');
-
 module.exports = function () {
   function BattleRoomServer(master) {
     _classCallCheck(this, BattleRoomServer);
@@ -22,7 +20,7 @@ module.exports = function () {
     value: function accept() {
       var _this = this;
 
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         var startedRef = _this.roomRef.child('started');
         _this._refs.push(startedRef);
         startedRef.on('value', function (snapshot) {
@@ -44,7 +42,7 @@ module.exports = function () {
     value: function unaccept() {
       var _this2 = this;
 
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         var startedRef = _this2.roomRef.child('started');
         _this2._refs.push(startedRef);
         startedRef.on('value', function (snapshot) {
@@ -65,7 +63,7 @@ module.exports = function () {
 
       this.alloff();
 
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         _this3.createRoom().then(function () {
           _this3.waitInRoom().then(resolve).catch(reject);
         }).catch(function (error) {
@@ -82,7 +80,7 @@ module.exports = function () {
 
       this.alloff();
 
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         _this4.joinExisting().then(function (room) {
           if (!room.started) {
             // remove all clients and start over
@@ -104,7 +102,7 @@ module.exports = function () {
 
       var query = this.master.ref.child('rooms').orderByChild('owner').startAt(this.master.firebase.auth().currentUser.uid).endAt(this.master.firebase.auth().currentUser.uid);
       this._refs.push(query);
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         query.once('value', function (snapshot) {
           var rooms = snapshot.val();
           if (rooms) {
@@ -143,7 +141,7 @@ module.exports = function () {
 
       this.master.notify(this.master.config.messages.searching);
 
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         _this6.waitForAllClients().then(function (uids) {
           _this6._uids = uids;
           _this6.master.notify(_this6.master.config.messages.accepted);
@@ -170,7 +168,7 @@ module.exports = function () {
 
       var query = this.master.ref.child('waiting').orderByChild('invite').startAt(false).endAt(false);
       this._refs.push(query);
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         var roomId = _this7.roomRef.key;
         query.on('child_added', function (snapshot) {
           var uid = snapshot.key;
@@ -196,7 +194,7 @@ module.exports = function () {
       var joined = false;
       var clientRef = this.clientsRef.child(uid);
       this._refs.push(clientRef);
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         // wait for client
         clientRef.on('value', function (snapshot) {
           var record = snapshot.val();
@@ -224,7 +222,7 @@ module.exports = function () {
     value: function waitForClient() {
       var _this9 = this;
 
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         _this9.sendInvite().then(function (uid) {
           _this9.waitForInviteResponse(uid)
           // client confirmed
@@ -258,7 +256,7 @@ module.exports = function () {
     value: function waitForClientReady(uid) {
       var ref = this.clientsRef.child(uid).child('ready');
       this._refs.push(ref);
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         ref.on('value', function (snapshot) {
           if (snapshot.val() === true) {
             resolve();

@@ -4,8 +4,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var rsvp = require('rsvp');
-
 module.exports = function () {
   function BattleRoomClient(master) {
     _classCallCheck(this, BattleRoomClient);
@@ -29,7 +27,7 @@ module.exports = function () {
 
       var startedRef = this.roomRef.child('started');
       this._refs.push(startedRef);
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         startedRef.on('value', function (snapshot) {
           if (snapshot.val() === true) {
             resolve();
@@ -50,7 +48,7 @@ module.exports = function () {
 
       var startedRef = this.roomRef.child('started');
       this._refs.push(startedRef);
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         startedRef.on('value', function (snapshot) {
           if (snapshot.val() === false) {
             resolve();
@@ -135,7 +133,7 @@ module.exports = function () {
       var _this4 = this;
 
       this.initWaiting();
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         _this4.waitingRef.on('value', function (snapshot) {
           if (!_this4.roomRef) {
             (function () {
@@ -183,7 +181,7 @@ module.exports = function () {
     value: function watchClient() {
       var _this5 = this;
 
-      var promise = new rsvp.Promise(function (resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         _this5.clientRef.on('value', function (snapshot) {
           var val = snapshot.val();
           if (!val) {
