@@ -220,7 +220,7 @@ module.exports = class BattleRoomServer {
     for (let i = 0; i < this.master.config.size - 1; i++) {
       promises.push(this.waitForClient());
     }
-    return rsvp.all(promises);
+    return Promise.all(promises);
   }
 
 
@@ -245,7 +245,7 @@ module.exports = class BattleRoomServer {
     this._uids.forEach((uid) => {
       promises.push(this.waitForClientReady(uid));
     });
-    return rsvp.all(promises);
+    return Promise.all(promises);
   }
 
   alloff() {
