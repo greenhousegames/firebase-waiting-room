@@ -106,7 +106,7 @@ module.exports = function () {
       var _this = this;
 
       if (!this.firebase.auth().currentUser) {
-        this.firebase.auth().signInAnonymously().finally(function () {
+        this.firebase.auth().signInAnonymously().then(function () {
           _this._prepareForBattle();
         });
       } else {

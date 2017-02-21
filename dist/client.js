@@ -36,7 +36,9 @@ module.exports = function () {
 
         _this.clientRef.child('ready').set(true).catch(reject);
       });
-      promise.finally(function () {
+      promise.then(function () {
+        return startedRef.off('value');
+      }).catch(function () {
         return startedRef.off('value');
       });
       return promise;
@@ -57,7 +59,9 @@ module.exports = function () {
 
         _this2.clientRef.child('ready').set(false).catch(reject);
       });
-      promise.finally(function () {
+      promise.then(function () {
+        return startedRef.off('value');
+      }).catch(function () {
         return startedRef.off('value');
       });
       return promise;
@@ -149,7 +153,11 @@ module.exports = function () {
           }
         }, _this4);
       });
-      promise.finally(function () {
+      promise.then(function () {
+        if (_this4.waitingRef) {
+          _this4.waitingRef.off('value');
+        }
+      }).catch(function () {
         if (_this4.waitingRef) {
           _this4.waitingRef.off('value');
         }
@@ -193,7 +201,11 @@ module.exports = function () {
           }
         }, _this5);
       });
-      promise.finally(function () {
+      promise.then(function () {
+        if (_this5.clientRef) {
+          _this5.clientRef.off('value');
+        }
+      }).catch(function () {
         if (_this5.clientRef) {
           _this5.clientRef.off('value');
         }
