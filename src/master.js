@@ -88,7 +88,7 @@ module.exports = class BattleRoomMaster {
 
   prepareForBattle() {
     if (!this.firebase.auth().currentUser) {
-      this.firebase.auth().signInAnonymously().finally(() => {
+      this.firebase.auth().signInAnonymously().then(() => {
         this._prepareForBattle();
       });
     } else {

@@ -25,7 +25,7 @@ module.exports = class BattleRoomClient {
         .set(true)
         .catch(reject);
     });
-    promise.finally(() => startedRef.off('value'));
+    promise.then(() => startedRef.off('value')).catch(() => startedRef.off('value'));
     return promise;
   }
 
@@ -43,7 +43,7 @@ module.exports = class BattleRoomClient {
         .set(false)
         .catch(reject);
     });
-    promise.finally(() => startedRef.off('value'));
+    promise.then(() => startedRef.off('value')).catch(() => startedRef.off('value'));
     return promise;
   }
 
@@ -132,10 +132,10 @@ module.exports = class BattleRoomClient {
         }
       }, this);
     });
-    promise.finally(() => {
-      if (this.waitingRef) {
-        this.waitingRef.off('value');
-      }
+    promise.then(() => {
+      if (this.waitingRef) { this.waitingRef.off('value'); }
+    }).catch(() => {
+      if (this.waitingRef) { this.waitingRef.off('value'); }
     });
     return promise;
   }
@@ -172,10 +172,10 @@ module.exports = class BattleRoomClient {
         }
       }, this);
     });
-    promise.finally(() => {
-      if (this.clientRef) {
-        this.clientRef.off('value');
-      }
+    promise.then(() => {
+      if (this.clientRef) { this.clientRef.off('value'); }
+    }).catch(() => {
+      if (this.clientRef) { this.clientRef.off('value'); }
     });
     return promise;
   }
