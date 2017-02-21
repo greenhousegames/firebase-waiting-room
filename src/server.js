@@ -166,7 +166,7 @@ module.exports = class BattleRoomServer {
         }
       }, this);
     });
-    promise.finally(() => query.off('child_added'));
+    promise.then(() => query.off('child_added')).catch(() => query.off('child_added'));
     return promise;
   }
 
@@ -192,7 +192,7 @@ module.exports = class BattleRoomServer {
         }
       }, this.master.config.MAX_INVITE_WAIT_TIME);
     });
-    promise.finally(() => clientRef.off('value'));
+    promise.then(() => clientRef.off('value')).catch(() => clientRef.off('value'));
     return promise;
   }
 
@@ -236,7 +236,7 @@ module.exports = class BattleRoomServer {
         }
       });
     });
-    promise.finally(() => ref.off('value'));
+    promise.then(() => ref.off('value')).catch(() => ref.off('value'));
     return promise;
   }
 
