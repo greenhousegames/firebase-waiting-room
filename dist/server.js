@@ -181,7 +181,9 @@ module.exports = function () {
           }
         }, _this7);
       });
-      promise.finally(function () {
+      promise.then(function () {
+        return query.off('child_added');
+      }).catch(function () {
         return query.off('child_added');
       });
       return promise;
@@ -212,7 +214,9 @@ module.exports = function () {
           }
         }, _this8.master.config.MAX_INVITE_WAIT_TIME);
       });
-      promise.finally(function () {
+      promise.then(function () {
+        return clientRef.off('value');
+      }).catch(function () {
         return clientRef.off('value');
       });
       return promise;
@@ -265,7 +269,9 @@ module.exports = function () {
           }
         });
       });
-      promise.finally(function () {
+      promise.then(function () {
+        return ref.off('value');
+      }).catch(function () {
         return ref.off('value');
       });
       return promise;
