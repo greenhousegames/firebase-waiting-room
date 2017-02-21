@@ -1,6 +1,6 @@
 {
   "name": "@greenhousegames/firebase-waiting-room",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Real-time waiting rooms using firebase",
   "main": "dist/index.js",
   "scripts": {

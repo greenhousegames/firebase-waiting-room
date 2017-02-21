@@ -253,7 +253,7 @@ module.exports = function () {
       for (var i = 0; i < this.master.config.size - 1; i++) {
         promises.push(this.waitForClient());
       }
-      return rsvp.all(promises);
+      return Promise.all(promises);
     }
   }, {
     key: 'waitForClientReady',
@@ -285,7 +285,7 @@ module.exports = function () {
       this._uids.forEach(function (uid) {
         promises.push(_this10.waitForClientReady(uid));
       });
-      return rsvp.all(promises);
+      return Promise.all(promises);
     }
   }, {
     key: 'alloff',
