@@ -4,12 +4,12 @@ const BattleRoomServer = require('./server');
 module.exports = class BattleRoomMaster {
   constructor(config, firebaseInst) {
     this.firebase = firebaseInst;
-    this.ref = this.firebase.database().ref('battles');
+    this.config = config;
+    this.ref = this.firebase.database().ref(this.config.path || 'battles');
     this.client = null;
     this.server = null;
     this.handlers = [];
     this.battleReady = false;
-    this.config = config;
     this.config.size = this.config.size || 2;
     this.config.MAX_CLIENT_WAIT_TIME = this.config.MAX_CLIENT_WAIT_TIME || 3000;
     this.config.MAX_INVITE_WAIT_TIME = this.config.MAX_INVITE_WAIT_TIME || 3000;
