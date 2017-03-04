@@ -3,4 +3,4 @@ Automatically create a client/server connect between users.  Once the user conne
 
 ## Live Products
 This library is being used by the following apps:
-- [Smash Dot](https://www.greenhousegames.com/games/smashdot.html)
+- [Blob Clobber](https://www.greenhousegames.com/games/blobclobber)
